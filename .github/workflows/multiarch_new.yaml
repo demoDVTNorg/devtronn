@@ -78,7 +78,7 @@ jobs:
           else
              echo "All images support multi-architecture."
              echo "PR:Ready-to-Review, exiting gracefully"
-             gh pr edit $PRNUM --remove-label "PR:Issue-verification-failed"
+             #gh pr edit $PRNUM --remove-label "PR:Issue-verification-failed"
              gh pr edit $PRNUM --add-label "PR:Ready-to-Review"
              exit 0
          fi
