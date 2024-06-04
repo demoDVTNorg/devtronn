@@ -11,5 +11,5 @@ jobs:
           if command -v gh &> /dev/null; then
             echo "gh is installed"
           else
-            echo "gh is not installed"
+            echo "gh is not ialled"
           fi
