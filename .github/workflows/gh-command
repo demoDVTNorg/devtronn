@@ -1,0 +1,15 @@
+name: Check gh availability
+
+on: [push, pull_request]
+
+jobs:
+  check-gh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if gh is available
+        run: |
+          if command -v gh &> /dev/null; then
+            echo "gh is installed"
+          else
+            echo "gh is not installed"
+          fi
