@@ -25,7 +25,7 @@ jobs:
     - name: Authenticate with GitHub
       run: echo "${{ secrets.token }}" | gh auth login --with-token
 
-    - name: Check Multi-Arch Images
+    - name: Check Multi-Arch Images of 
       env:
          GITHUB_TOKEN: ${{ secrets.token }}
          PRNUM: ${{ github.event.pull_request.number }}
