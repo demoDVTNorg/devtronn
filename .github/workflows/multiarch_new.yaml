@@ -2,7 +2,8 @@ name: Multi-Arch Image Check
 
 on:
   pull_request:
-    types: [closed]
+    types: [opened, edited, synchronize, reopened]
+
 
 jobs:
   check-multiarch:
