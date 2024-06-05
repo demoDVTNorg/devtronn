@@ -24,7 +24,7 @@ jobs:
         sudo pip3 install yq
 
     - name: Authenticate with GitHub
-      run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+      run: echo "${{ secrets.token }}" | gh auth login --with-token
 
     - name: Check Multi-Arch Images
       env:
@@ -66,20 +66,14 @@ jobs:
          if [ ${#non_multiarch_images[@]} -ne 0 ]; then
              echo "The following images do not support multi-architecture:"
              printf '%s\n' "${non_multiarch_images[@]}"
-             curl -s -X POST -H "Authorization: token $token" -H "Accept: application/vnd.github.v3+json" \
-                  https://api.github.com/repos/$REPO/issues/$PRNUM/labels \
-                  -d '{"labels":["PR:Issue-verification-failed"]}'
-             curl -s -X DELETE -H "Authorization: token $GITHUB_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-                  https://api.github.com/repos/$REPO/issues/$PRNUM/labels/PR:Ready-to-Review
+
+             gh pr edit $PRNUM --add-label "PR:Issue-verification-failed"
+             gh pr edit $PRNUM --remove-label "PR:Ready-to-Review"
              exit 1
          else
              echo "All images support multi-architecture."
              echo "PR:Ready-to-Review, exiting gracefully"
-             curl -s -X POST -H "Authorization: token $token" -H "Accept: application/vnd.github.v3+json" \
-                  https://api.github.com/repos/$REPO/issues/$PRNUM/labels \
-                  -d '{"labels":["PR:Ready-to-Review"]}'
-             curl -s -X DELETE -H "Authorization: token $GITHUB_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-                  https://api.github.com/repos/$REPO/issues/$PRNUM/labels/PR:Issue-verification-failed
+             gh pr edit $PRNUM --add-label "PR:Ready-to-Review"
+             gh pr edit $PRNUM --remove-label "PR:Issue-verification-failed"
              exit 0
          fi
-
