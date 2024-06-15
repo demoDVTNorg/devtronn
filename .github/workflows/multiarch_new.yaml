@@ -34,7 +34,7 @@ jobs:
          REPO: ${{ github.repository }}
       run: |
          yq '.' charts/devtron/values.yaml > values.json
-         container_registry=$(yq '.global.containerRegistry' values.json)
+         container_registry=$(yq -r '.global.containerRegistry' values.json)
          echo "$container_registry"
 
          get_image_arch() {
