@@ -34,6 +34,8 @@ jobs:
          REPO: ${{ github.repository }}
       run: |
          yq '.' charts/devtron/values.yaml > values.json
+         container_registry=$(yq -r '.global.containerRegistry' values.json)
+         echo "$container_registry"
 
          get_image_arch() {
              local image="$1"
@@ -42,7 +44,8 @@ jobs:
                  return
              fi
 
-             local arch=$(docker manifest inspect "quay.io/devtron/$image" | jq -r '.manifests[].platform.architecture' | sort | uniq)
+              echo "$container_registry"
+             local arch=$(docker manifest inspect "$container_registry/$image" | jq -r '.manifests[].platform.architecture' | sort | uniq)
              if [ $? -ne 0 ]; then
                  error_images+=("$image")
                  return
